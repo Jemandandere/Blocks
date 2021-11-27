@@ -2,7 +2,6 @@ package com.jemandandere.logic.objects
 
 import com.jemandandere.logic.Parameters
 import com.jemandandere.logic.objects.figures.Figure
-import com.jemandandere.logic.objects.figures.FigureO
 
 class Field(val width: Int = Parameters.fieldWidth, height: Int = Parameters.fieldHeight) {
 
@@ -21,10 +20,17 @@ class Field(val width: Int = Parameters.fieldWidth, height: Int = Parameters.fie
         }
 
     init {
-        repeat(width * height) {
-            _map.add(false)
-        }
+        repeat(width * height) { _map.add(false) }
+        createFigure()
+    }
 
-        figure = FigureO(0, 0)
+    private fun createFigure() {
+        figure = Figure.getRandom(START_X_POS, START_Y_POS)
+    }
+
+    companion object {
+
+        private const val START_X_POS = 5
+        private const val START_Y_POS = 0
     }
 }

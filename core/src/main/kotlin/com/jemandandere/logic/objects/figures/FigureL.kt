@@ -1,6 +1,6 @@
 package com.jemandandere.logic.objects.figures
 
-class FigureJ(
+class FigureL(
     override var xPos: Int,
     override var yPos: Int,
-) : Figure(intArrayOf(0, 2, 4, 5))
+) : Figure(intArrayOf(1, 3, 4, 5))
