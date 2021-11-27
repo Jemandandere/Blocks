@@ -51,10 +51,11 @@ class Field(val width: Int = Parameters.fieldWidth, val height: Int = Parameters
                 figure?.moveDown()
             } else {
                 fixFigure(fig)
+                checkLines()
             }
         }
     }
-    
+
     private fun tryLeft() {
         figure?.let { fig ->
             if (canLeft(fig)) {
@@ -102,6 +103,28 @@ class Field(val width: Int = Parameters.fieldWidth, val height: Int = Parameters
         figure.getPosList().forEach { pos ->
             _map[pos.y * width + pos.x] = true
             createFigure()
+        }
+    }
+
+    private fun checkLines() {
+        var isFull = true
+        _map.forEachIndexed { index, hasBlock ->
+            if (!hasBlock) isFull = false
+            if (index % width == width - 1) {
+                if (isFull) removeLine(index)
+                isFull = true
+            }
+        }
+    }
+
+    private fun removeLine(index: Int) {
+        for (i in index downTo 0) {
+            println(i)
+            if (i < width) {
+                _map[i] = false
+            } else {
+                _map[i] = _map[i - width]
+            }
         }
     }
 
