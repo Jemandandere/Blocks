@@ -2,10 +2,12 @@ package com.jemandandere.app.objects
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.jemandandere.app.consts.Sizes.blockSize
+import com.jemandandere.app.objects.figures.J
 import com.jemandandere.logic.Parameters
 
 class Field(private val width: Int = Parameters.fieldWidth, height: Int = Parameters.fieldHeight) {
 
+    private val figure = J(5, 5)
     private val blocks = mutableListOf<Block?>()
 
     init {
@@ -22,6 +24,7 @@ class Field(private val width: Int = Parameters.fieldWidth, height: Int = Parame
                 it.draw(batch, xPos, yPos)
             }
         }
+        figure.draw(batch)
     }
 
     fun disposeSafely() {
