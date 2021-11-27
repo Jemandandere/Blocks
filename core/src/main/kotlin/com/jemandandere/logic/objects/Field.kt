@@ -5,7 +5,7 @@ import com.jemandandere.logic.objects.figures.Figure
 
 class Field(val width: Int = Parameters.fieldWidth, height: Int = Parameters.fieldHeight) {
 
-    var figure: Figure? = null
+    private var figure: Figure? = null
     private val _map = mutableListOf<Boolean>()
 
     val map: List<Boolean>
@@ -14,7 +14,7 @@ class Field(val width: Int = Parameters.fieldWidth, height: Int = Parameters.fie
                 fig.pos.forEach { i ->
                     val x = (fig.xPos + i / 2)
                     val y = (fig.yPos + i % 2)
-                    set(x * width + y, true)
+                    set(y * width + x, true)
                 }
             }
         }
