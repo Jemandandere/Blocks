@@ -4,27 +4,29 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.jemandandere.app.consts.Sizes.blockSize
 import com.jemandandere.logic.Parameters
 
-class Field(val width: Int = Parameters.fieldWidth, val height: Int = Parameters.fieldHeight) {
+class Field(private val width: Int = Parameters.fieldWidth, height: Int = Parameters.fieldHeight) {
 
-    private val blocks = mutableListOf<Block>()
+    private val blocks = mutableListOf<Block?>()
 
     init {
         repeat(width * height) {
-            blocks.add(Block())
+            blocks.add(null)
         }
     }
 
     fun draw(batch: Batch, x: Float, y: Float) {
         blocks.forEachIndexed { i, block ->
-            val xPos = x + (i % width) * blockSize
-            val yPos = y + (i / width) * blockSize
-            block.draw(batch, xPos, yPos)
+            block?.let {
+                val xPos = x + (i % width) * blockSize
+                val yPos = y + (i / width) * blockSize
+                it.draw(batch, xPos, yPos)
+            }
         }
     }
 
     fun disposeSafely() {
         blocks.forEach { block ->
-            block.disposeSafely()
+            block?.disposeSafely()
         }
     }
 }
