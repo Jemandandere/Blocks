@@ -1,11 +1,19 @@
 package com.jemandandere.logic.objects.figures
 
+import com.jemandandere.logic.Pos
 import kotlin.random.Random
 
 abstract class Figure(val pos: IntArray) {
 
     abstract var xPos: Int
     abstract var yPos: Int
+
+    fun getPosList(): List<Pos> = pos.map { i ->
+        Pos(
+            x = (xPos + i / 2),
+            y = (yPos + i % 2)
+        )
+    }
 
     companion object {
 

@@ -3,7 +3,7 @@ package com.jemandandere.logic.objects
 import com.jemandandere.logic.Parameters
 import com.jemandandere.logic.objects.figures.Figure
 
-class Field(val width: Int = Parameters.fieldWidth, height: Int = Parameters.fieldHeight) {
+class Field(val width: Int = Parameters.fieldWidth, val height: Int = Parameters.fieldHeight) {
 
     private val _map = mutableListOf<Boolean>()
     val map: List<Boolean>
@@ -23,25 +23,18 @@ class Field(val width: Int = Parameters.fieldWidth, height: Int = Parameters.fie
         if (timer < SECOND) return
         timer -= SECOND
         figure?.let { fig ->
-            if (fig.yPos == Parameters.fieldHeight - 2) {
-                fig.pos.forEach { i ->
-                    val x = (fig.xPos + i / 2)
-                    val y = (fig.yPos + i % 2)
-                    _map.set(y * width + x, true)
-                    createFigure()
-                }
+            if (canDown(fig)) {
+                moveDown(fig)
             } else {
-                figure?.yPos = fig.yPos + 1
+                fixFigure(fig)
             }
         }
     }
 
     private fun getActualMap() = _map.toMutableList().apply {
         figure?.let { fig ->
-            fig.pos.forEach { i ->
-                val x = (fig.xPos + i / 2)
-                val y = (fig.yPos + i % 2)
-                set(y * width + x, true)
+            fig.getPosList().forEach { pos ->
+                set(pos.y * width + pos.x, true)
             }
         }
     }
@@ -50,11 +43,32 @@ class Field(val width: Int = Parameters.fieldWidth, height: Int = Parameters.fie
         figure = Figure.getRandom(START_X_POS, START_Y_POS)
     }
 
+    private fun canDown(figure: Figure): Boolean {
+        figure.getPosList().forEach { pos ->
+            if (pos.y * width + pos.x > width*height-width || _map[(pos.y+1) * width + pos.x]) {
+                return false
+            }
+        }
+        return true
+    }
+
+    private fun moveDown(figure: Figure) {
+        this.figure?.yPos = figure.yPos + 1
+    }
+
+    private fun fixFigure(figure: Figure) {
+        figure.getPosList().forEach { pos ->
+            _map[pos.y * width + pos.x] = true
+            createFigure()
+        }
+    }
+
+
     companion object {
 
-        private const val START_X_POS = 5
+        private const val START_X_POS = 3
         private const val START_Y_POS = 0
 
-        private const val SECOND = 0.5f
+        private const val SECOND = 0.2f
     }
 }
