@@ -5,23 +5,25 @@ import com.jemandandere.logic.objects.figures.Figure
 
 class Field(val width: Int = Parameters.fieldWidth, height: Int = Parameters.fieldHeight) {
 
-    private var figure: Figure? = null
     private val _map = mutableListOf<Boolean>()
-
     val map: List<Boolean>
-        get() = _map.apply {
-            figure?.let { fig ->
-                fig.pos.forEach { i ->
-                    val x = (fig.xPos + i / 2)
-                    val y = (fig.yPos + i % 2)
-                    set(y * width + x, true)
-                }
-            }
-        }
+        get() = getActualMap()
+
+    private var figure: Figure? = null
 
     init {
         repeat(width * height) { _map.add(false) }
         createFigure()
+    }
+
+    private fun getActualMap() = _map.apply {
+        figure?.let { fig ->
+            fig.pos.forEach { i ->
+                val x = (fig.xPos + i / 2)
+                val y = (fig.yPos + i % 2)
+                set(y * width + x, true)
+            }
+        }
     }
 
     private fun createFigure() {
