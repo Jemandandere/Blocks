@@ -32,8 +32,8 @@ class GameScreen : KtxScreen {
     private fun handleInput() {
         val action = when {
             Gdx.input.isKeyPressed(Input.Keys.DOWN) -> Action.Down
-            Gdx.input.isKeyPressed(Input.Keys.LEFT) -> Action.Left
-            Gdx.input.isKeyPressed(Input.Keys.RIGHT) -> Action.Right
+            Gdx.input.isKeyJustPressed(Input.Keys.LEFT) -> Action.Left
+            Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) -> Action.Right
             else -> return
         }
         field.handleAction(action)
