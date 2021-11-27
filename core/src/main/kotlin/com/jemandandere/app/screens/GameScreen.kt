@@ -1,11 +1,14 @@
 package com.jemandandere.app.screens
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.ScreenUtils
 import com.jemandandere.app.consts.Colors
 import com.jemandandere.app.draws.BlockGreen
 import com.jemandandere.app.draws.BlockGrey
 import com.jemandandere.app.utils.draw
+import com.jemandandere.logic.Action
 import com.jemandandere.logic.objects.Field
 import ktx.app.KtxScreen
 import ktx.assets.disposeSafely
@@ -21,8 +24,19 @@ class GameScreen : KtxScreen {
 
     override fun render(delta: Float) {
         clearScreen()
+        handleInput()
         updateGameField(delta)
         renderGameField()
+    }
+
+    private fun handleInput() {
+        val action = when {
+            Gdx.input.isKeyPressed(Input.Keys.DOWN) -> Action.Down
+            Gdx.input.isKeyPressed(Input.Keys.LEFT) -> Action.Left
+            Gdx.input.isKeyPressed(Input.Keys.RIGHT) -> Action.Right
+            else -> return
+        }
+        field.handleAction(action)
     }
 
     private fun clearScreen() {
