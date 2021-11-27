@@ -10,7 +10,7 @@ fun Field.draw(batch: Batch, block: Block, x: Float, y: Float) {
     this.map.forEachIndexed { i, hasBlock ->
         if (hasBlock) {
             val xPos = x + (i % width) * blockSize
-            val yPos = y + (Parameters.fieldHeight - i / width) * blockSize
+            val yPos = y + (Parameters.fieldHeight - 1 - i / width) * blockSize
             block.draw(batch, xPos, yPos)
         }
     }
