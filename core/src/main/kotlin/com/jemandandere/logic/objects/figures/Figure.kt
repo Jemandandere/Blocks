@@ -15,6 +15,19 @@ abstract class Figure(val pos: IntArray) {
         )
     }
 
+    fun moveDown() {
+        this.yPos++
+    }
+
+    fun moveRight() {
+        this.xPos++
+    }
+
+    fun moveLeft() {
+        this.xPos--
+    }
+
+
     companion object {
 
         private const val FIGURES_COUNT = 7

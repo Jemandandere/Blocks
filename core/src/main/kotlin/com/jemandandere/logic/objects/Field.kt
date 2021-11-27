@@ -41,15 +41,32 @@ class Field(val width: Int = Parameters.fieldWidth, val height: Int = Parameters
     }
 
     private fun createFigure() {
-        figure = Figure.getRandom(START_X_POS, START_Y_POS)
+        figure = Figure.getRandom(Parameters.figureStartXPos, Parameters.figureStartYPos)
     }
 
     private fun tryDown() {
         figure?.let { fig ->
             if (canDown(fig)) {
-                moveDown(fig)
+                timer = 0f
+                figure?.moveDown()
             } else {
                 fixFigure(fig)
+            }
+        }
+    }
+    
+    private fun tryLeft() {
+        figure?.let { fig ->
+            if (canLeft(fig)) {
+                figure?.moveLeft()
+            }
+        }
+    }
+
+    private fun tryRight() {
+        figure?.let { fig ->
+            if (canRight(fig)) {
+                figure?.moveRight()
             }
         }
     }
@@ -63,19 +80,6 @@ class Field(val width: Int = Parameters.fieldWidth, val height: Int = Parameters
         return true
     }
 
-    private fun moveDown(figure: Figure) {
-        timer = 0f
-        this.figure?.yPos = figure.yPos + 1
-    }
-
-    private fun tryLeft() {
-        figure?.let { fig ->
-            if (canLeft(fig)) {
-                moveLeft(fig)
-            }
-        }
-    }
-
     private fun canLeft(figure: Figure): Boolean {
         figure.getPosList().forEach { pos ->
             if (pos.x == 0 || _map[pos.y * width + pos.x - 1]) {
@@ -85,29 +89,13 @@ class Field(val width: Int = Parameters.fieldWidth, val height: Int = Parameters
         return true
     }
 
-    private fun moveLeft(figure: Figure) {
-        this.figure?.xPos = figure.xPos - 1
-    }
-
-    private fun tryRight() {
-        figure?.let { fig ->
-            if (canRight(fig)) {
-                moveRight(fig)
-            }
-        }
-    }
-
     private fun canRight(figure: Figure): Boolean {
         figure.getPosList().forEach { pos ->
-            if (pos.x + 1  >= width  || _map[pos.y * width + pos.x + 1]) {
+            if (pos.x >= width - 1 || _map[pos.y * width + pos.x + 1]) {
                 return false
             }
         }
         return true
-    }
-
-    private fun moveRight(figure: Figure) {
-        this.figure?.xPos = figure.xPos + 1
     }
 
     private fun fixFigure(figure: Figure) {
@@ -117,11 +105,7 @@ class Field(val width: Int = Parameters.fieldWidth, val height: Int = Parameters
         }
     }
 
-
     companion object {
-
-        private const val START_X_POS = 3
-        private const val START_Y_POS = 0
 
         private const val SECOND = 1.0f
     }
