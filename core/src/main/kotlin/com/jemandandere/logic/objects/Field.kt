@@ -11,12 +11,32 @@ class Field(val width: Int = Parameters.fieldWidth, height: Int = Parameters.fie
 
     private var figure: Figure? = null
 
+    private var timer: Float = 0f
+
     init {
         repeat(width * height) { _map.add(false) }
         createFigure()
     }
 
-    private fun getActualMap() = _map.apply {
+    fun update(delta: Float) {
+        timer += delta
+        if (timer < SECOND) return
+        timer -= SECOND
+        figure?.let { fig ->
+            if (fig.yPos == Parameters.fieldHeight - 2) {
+                fig.pos.forEach { i ->
+                    val x = (fig.xPos + i / 2)
+                    val y = (fig.yPos + i % 2)
+                    _map.set(y * width + x, true)
+                    createFigure()
+                }
+            } else {
+                figure?.yPos = fig.yPos + 1
+            }
+        }
+    }
+
+    private fun getActualMap() = _map.toMutableList().apply {
         figure?.let { fig ->
             fig.pos.forEach { i ->
                 val x = (fig.xPos + i / 2)
@@ -34,5 +54,7 @@ class Field(val width: Int = Parameters.fieldWidth, height: Int = Parameters.fie
 
         private const val START_X_POS = 5
         private const val START_Y_POS = 0
+
+        private const val SECOND = 0.5f
     }
 }

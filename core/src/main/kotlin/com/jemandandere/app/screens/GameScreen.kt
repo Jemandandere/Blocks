@@ -19,11 +19,16 @@ class GameScreen : KtxScreen {
 
     override fun render(delta: Float) {
         clearScreen()
+        updateGameField(delta)
         renderGameField()
     }
 
     private fun clearScreen() {
         ScreenUtils.clear(Colors.BACKGROUND)
+    }
+
+    private fun updateGameField(delta: Float) {
+        field.update(delta)
     }
 
     private fun renderGameField() {
