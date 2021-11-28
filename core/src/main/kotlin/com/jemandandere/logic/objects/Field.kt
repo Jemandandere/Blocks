@@ -1,13 +1,14 @@
 package com.jemandandere.logic.objects
 
 import com.jemandandere.logic.Action
+import com.jemandandere.logic.Colors
 import com.jemandandere.logic.Parameters
 import com.jemandandere.logic.objects.figures.Figure
 
 class Field(val width: Int = Parameters.fieldWidth, val height: Int = Parameters.fieldHeight) {
 
-    private val _map = mutableListOf<Boolean>()
-    val map: List<Boolean>
+    private val _map = mutableListOf<Int>()
+    val map: List<Int>
         get() = getActualMap()
 
     private var figure: Figure? = null
@@ -15,7 +16,7 @@ class Field(val width: Int = Parameters.fieldWidth, val height: Int = Parameters
     private var timer: Float = 0f
 
     init {
-        repeat(width * height) { _map.add(false) }
+        repeat(width * height) { _map.add(Colors.GREY.value) }
         createFigure()
     }
 
@@ -36,7 +37,7 @@ class Field(val width: Int = Parameters.fieldWidth, val height: Int = Parameters
     private fun getActualMap() = _map.toMutableList().apply {
         figure?.let { fig ->
             fig.getPosList().forEach { pos ->
-                set(pos.y * width + pos.x, true)
+                set(pos.y * width + pos.x, figure?.color?.value ?: 0)
             }
         }
     }
@@ -93,7 +94,7 @@ class Field(val width: Int = Parameters.fieldWidth, val height: Int = Parameters
 
     private fun canDown(figure: Figure): Boolean {
         figure.getPosList().forEach { pos ->
-            if (pos.y * width + pos.x >= width * height - width || _map[(pos.y + 1) * width + pos.x]) {
+            if (pos.y * width + pos.x >= width * height - width || _map[(pos.y + 1) * width + pos.x] > 0) {
                 return false
             }
         }
@@ -102,7 +103,7 @@ class Field(val width: Int = Parameters.fieldWidth, val height: Int = Parameters
 
     private fun canLeft(figure: Figure): Boolean {
         figure.getPosList().forEach { pos ->
-            if (pos.x == 0 || _map[pos.y * width + pos.x - 1]) {
+            if (pos.x == 0 || _map[pos.y * width + pos.x - 1] > 0) {
                 return false
             }
         }
@@ -111,7 +112,7 @@ class Field(val width: Int = Parameters.fieldWidth, val height: Int = Parameters
 
     private fun canRight(figure: Figure): Boolean {
         figure.getPosList().forEach { pos ->
-            if (pos.x >= width - 1 || _map[pos.y * width + pos.x + 1]) {
+            if (pos.x >= width - 1 || _map[pos.y * width + pos.x + 1] > 0) {
                 return false
             }
         }
@@ -120,15 +121,15 @@ class Field(val width: Int = Parameters.fieldWidth, val height: Int = Parameters
 
     private fun fixFigure(figure: Figure) {
         figure.getPosList().forEach { pos ->
-            _map[pos.y * width + pos.x] = true
+            _map[pos.y * width + pos.x] = figure.color.value
             createFigure()
         }
     }
 
     private fun checkLines() {
         var isFull = true
-        _map.forEachIndexed { index, hasBlock ->
-            if (!hasBlock) isFull = false
+        _map.forEachIndexed { index, color ->
+            if (color == 0) isFull = false
             if (index % width == width - 1) {
                 if (isFull) removeLine(index)
                 isFull = true
@@ -140,7 +141,7 @@ class Field(val width: Int = Parameters.fieldWidth, val height: Int = Parameters
         // TODO VDY 211128 fix top lines remove
         for (i in index downTo 0) {
             if (i < width) {
-                _map[i] = false
+                _map[i] = 0
             } else {
                 _map[i] = _map[i - width]
             }

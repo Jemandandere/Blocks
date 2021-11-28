@@ -1,5 +1,6 @@
 package com.jemandandere.logic.objects.figures
 
+import com.jemandandere.logic.Colors
 import com.jemandandere.logic.Pos
 import kotlin.random.Random
 
@@ -7,6 +8,8 @@ abstract class Figure(val pos: IntArray) {
 
     abstract var xPos: Int
     abstract var yPos: Int
+
+    abstract val color: Colors
 
     private var rotate = 0
 

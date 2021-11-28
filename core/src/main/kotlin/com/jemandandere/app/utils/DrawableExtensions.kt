@@ -6,11 +6,11 @@ import com.jemandandere.app.draws.Block
 import com.jemandandere.logic.Parameters
 import com.jemandandere.logic.objects.Field
 
-fun Field.draw(batch: Batch, blockActive: Block, blockInactive: Block, x: Float, y: Float) {
-    this.map.forEachIndexed { i, hasBlock ->
+fun Field.draw(batch: Batch, blocks: Map<Int, Block>, x: Float, y: Float) {
+    this.map.forEachIndexed { i, color ->
         val xPos = x + (i % width) * blockSize
         val yPos = y + (Parameters.fieldHeight - 1 - i / width) * blockSize
-        val block = if (hasBlock) blockActive else blockInactive
+        val block = blocks[color] ?: return
         block.draw(batch, xPos, yPos)
     }
 }
