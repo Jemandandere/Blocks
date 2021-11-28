@@ -5,10 +5,12 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.ScreenUtils
 import com.jemandandere.app.consts.Colors
+import com.jemandandere.app.consts.Sizes
 import com.jemandandere.app.draws.BlockGreen
 import com.jemandandere.app.draws.BlockGrey
 import com.jemandandere.app.utils.draw
 import com.jemandandere.logic.Action
+import com.jemandandere.logic.Parameters
 import com.jemandandere.logic.objects.Field
 import ktx.app.KtxScreen
 import ktx.assets.disposeSafely
@@ -50,7 +52,13 @@ class GameScreen : KtxScreen {
 
     private fun renderGameField() {
         batch.use {
-            field.draw(it, blockActive, blockInactive, 10f, 10f)
+            field.draw(
+                it,
+                blockActive,
+                blockInactive,
+                (Sizes.screenWidth - (Parameters.fieldWidth * Sizes.blockSize)) / 2,
+                10f
+            )
         }
     }
 
