@@ -23,6 +23,7 @@ class Field(val width: Int = Parameters.fieldWidth, val height: Int = Parameters
         Action.Down -> tryDown()
         Action.Left -> tryLeft()
         Action.Right -> tryRight()
+        Action.Rotate -> tryRotate()
     }
 
     fun update(delta: Float) {
@@ -72,6 +73,24 @@ class Field(val width: Int = Parameters.fieldWidth, val height: Int = Parameters
         }
     }
 
+    private fun tryRotate() {
+        figure?.let { fig ->
+            if (canRotate(fig)) {
+                figure?.rotate()
+            }
+        }
+    }
+
+    private fun canRotate(figure: Figure): Boolean {
+        // TODO VDY 211128 add rotate check
+//        figure.getPosList().forEach { pos ->
+//            if (pos.y * width + pos.x >= width * height - width || _map[(pos.y + 1) * width + pos.x]) {
+//                return false
+//            }
+//        }
+        return true
+    }
+
     private fun canDown(figure: Figure): Boolean {
         figure.getPosList().forEach { pos ->
             if (pos.y * width + pos.x >= width * height - width || _map[(pos.y + 1) * width + pos.x]) {
@@ -118,8 +137,8 @@ class Field(val width: Int = Parameters.fieldWidth, val height: Int = Parameters
     }
 
     private fun removeLine(index: Int) {
+        // TODO VDY 211128 fix top lines remove
         for (i in index downTo 0) {
-            println(i)
             if (i < width) {
                 _map[i] = false
             } else {

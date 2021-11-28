@@ -8,11 +8,28 @@ abstract class Figure(val pos: IntArray) {
     abstract var xPos: Int
     abstract var yPos: Int
 
+    private var rotate = 0
+
     fun getPosList(): List<Pos> = pos.map { i ->
-        Pos(
-            x = (xPos + i / 2),
-            y = (yPos + i % 2)
-        )
+        // TODO VDY 211128 fix rotate
+        when (rotate % 4) {
+            0 -> Pos(
+                x = (xPos + i / 2),
+                y = (yPos + i % 2),
+            )
+            1 -> Pos(
+                x = (xPos + 1 + i % 2),
+                y = (yPos - 1 + i / 2),
+            )
+            2 -> Pos(
+                x = (xPos + i / 2),
+                y = (yPos - i % 2),
+            )
+            else -> Pos(
+                x = (xPos + 1 - i % 2),
+                y = (yPos - 1 + i / 2),
+            )
+        }
     }
 
     fun moveDown() {
@@ -25,6 +42,10 @@ abstract class Figure(val pos: IntArray) {
 
     fun moveLeft() {
         this.xPos--
+    }
+
+    fun rotate() {
+        rotate++
     }
 
 

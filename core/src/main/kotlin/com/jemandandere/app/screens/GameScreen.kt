@@ -29,18 +29,19 @@ class GameScreen : KtxScreen {
         renderGameField()
     }
 
+    private fun clearScreen() {
+        ScreenUtils.clear(Colors.BACKGROUND)
+    }
+
     private fun handleInput() {
         val action = when {
             Gdx.input.isKeyPressed(Input.Keys.DOWN) -> Action.Down
             Gdx.input.isKeyJustPressed(Input.Keys.LEFT) -> Action.Left
             Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) -> Action.Right
+            Gdx.input.isKeyJustPressed(Input.Keys.UP) -> Action.Rotate
             else -> return
         }
         field.handleAction(action)
-    }
-
-    private fun clearScreen() {
-        ScreenUtils.clear(Colors.BACKGROUND)
     }
 
     private fun updateGameField(delta: Float) {
